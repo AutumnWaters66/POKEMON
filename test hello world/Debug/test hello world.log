@@ -1,0 +1,4 @@
+﻿  hello.cpp
+C:\Users\Administrator\Desktop\大二工程训练营\神奇宝贝\test hello world\hello.cpp(320,29): warning C4002:  类函数宏的调用“_T”参数过多
+C:\Users\Administrator\Desktop\大二工程训练营\神奇宝贝\test hello world\hello.cpp(321,24): warning C4002:  类函数宏的调用“_T”参数过多
+  test hello world.vcxproj -> C:\Users\Administrator\Desktop\大二工程训练营\神奇宝贝\Debug\test hello world.exe
