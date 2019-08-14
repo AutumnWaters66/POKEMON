@@ -53,19 +53,47 @@ struct pokemon
 	int special_defence;
 	int level;
 	int number;				// 精灵编号
-	char *name;             //精灵名称
-	char *speciese;
+	char* name;             //精灵名称
+	char* speciese;
 	int skill_1;                 //四项技能的基础伤害//
 	int skill_2;
 	int skill_3;
 	int skill_4;
-	char *skill1_name;           //技能名字
-	char *skill2_name;
+	char* skill1_name;           //技能名字
+	char* skill2_name;
 	void(*skill1)();               //技能函数
 	void(*skill2)();
+	char* skill3_name;           //技能名字
+	char* skill4_name;
+	void(*skill3)();               //技能函数
+	void(*skill4)();
 	int judge;
 	int time;                             //在一定时间以后将把原位置的精灵重新刷新出来
 }PK[pokemon_number];
+struct ThunderBolt
+{
+	char* name = "十万伏特";
+	char* speciese = "special";
+	int damage = 90;
+}ThunderBolt;
+struct Growl
+{
+	char* name = "叫声";
+	char* speciese = "vary";
+	int damage = 0;
+}Growl;
+struct ThunderWave
+{
+	char* name = "电磁波";
+	char* speciese = "vary";
+	int damage = 0;
+}ThunderWave;
+struct Thunder
+{
+	char* name = "打雷";
+	char* speciese = "special";
+	int damage = 110;
+}Thunder;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //所有函数声明
@@ -78,11 +106,22 @@ void readfile();
 void writefile();
 void aid_menu();
 //三、数据更新函数，战斗函数，动画函数
+void startup_pokemon_judge();//精灵时间初始化
+void startup_pokemon();//精灵基础属性初始化
+void startup_pokemon_bleed();//精灵血量初始化
+void startup_pokemon_desination();//精灵位置初始化
 void startup_map_show();//地图初始化
 void startup_music();//音乐播放与关闭
 void closedown_music();
+void pokemon_refresh();//精灵刷新
 void map_show();//地图显示函数
 void operate();//交互操作函数
+void load_PK_picture(pokemon* PK);//导入敌方精灵图片
+void load_PK_skill(pokemon* PK, int PK_bleed, int full_bleed);//敌方技能
+void interface_change_animation();//界面切换动画
+void enemy_fight_show(pokemon* PK_enemy);//敌方精灵图片加载以及技能显示
+void fight_show(pokemon* PK_enemy, pokemon* PK_own);//战斗显示函数
+void fight();//战斗函数
 			 ///////////////////////////////////////////////////////////////////////////////////////////////
 			 //音乐文件的打开
 void startup_music()
@@ -287,6 +326,366 @@ loop:
 		goto loop;
 	}
 }
+void startup_pokemon_judge()
+{
+	int i;
+	for (i = 0; i <= pokemon_number; i++)
+	{
+		PK[i].time = 0;
+	}
+}
+//精灵基础属性初始化
+void startup_pokemon()
+{
+	//皮卡丘//
+	PK[0].level = 5;
+	PK[0].x = 0;
+	PK[0].y = 0;
+	PK[0].number = 0;
+	PK[0].attack = 8 + (PK[0].level - 5) * 2;
+	PK[0].bleed = 32 + (PK[0].level - 5) * 3;
+	PK[0].defence = 4 + (PK[0].level - 5);
+	PK[0].special_attack = 9 + (PK[0].level - 5) * 2;
+	PK[0].special_defence = 7 + (PK[0].level - 5);
+	PK[0].name = "皮卡丘";
+	PK[0].speciese = "电";
+	PK[0].skill1_name = ThunderBolt.name;
+	PK[0].skill2_name = Growl.name;
+	PK[0].skill3_name = ThunderWave.name;
+	PK[0].skill4_name = Thunder.name;
+	PK[0].skill_1 = ThunderBolt.damage;
+	PK[0].skill_2 = Growl.damage;
+	PK[0].skill_3 = ThunderWave.damage;
+	PK[0].skill_4 = Thunder.damage;
+	PK[0].judge = 1;
+
+	//小火龙//
+	PK[1].x = 0;                       //精灵在地图上的坐标//
+	PK[1].y = 0;
+	PK[1].number = 1;
+	PK[1].attack = 8;                    //普攻
+	PK[1].bleed = 30;                    //生命值
+	PK[1].defence = 4;                   //普防
+	PK[1].special_attack = 9;            //特攻
+	PK[1].special_defence = 7;           //特防
+	PK[1].level = 5;                   //等级
+	PK[1].name = "小火龙";             //名称
+	PK[1].speciese = "火";             //元素属性
+	PK[1].skill1 = &firehigh;
+	PK[1].skill2 = &boom;
+	PK[1].skill1_name = "火柱";
+	PK[1].skill2_name = "大爆炸";
+	PK[1].skill_1 = 50;                  //技能1伤害
+	PK[1].skill_2 = 80;                  //技能2伤害
+	PK[1].skill_3 = 0;
+	PK[1].skill_4 = 0;
+	PK[1].judge = 0;
+
+	//妙蛙种子//
+	PK[2].x = 0;
+	PK[2].y = 0;
+	PK[2].number = 2;
+	PK[2].attack = 6;
+	PK[2].bleed = 34;
+	PK[2].defence = 3;
+	PK[2].special_attack = 8;
+	PK[2].special_defence = 6;
+	PK[2].level = 5;
+	PK[2].name = "妙蛙种子";
+	PK[2].speciese = "草";
+	PK[2].skill1 = &rope;
+	PK[2].skill2 = &fallingStar;
+	PK[2].skill1_name = "飞叶快刀";
+	PK[2].skill2_name = "流星陨落";
+	PK[2].skill_1 = 30;
+	PK[2].skill_2 = 40;
+	PK[2].skill_3 = 0;
+	PK[2].skill_4 = 0;
+
+	//鲤鱼王//
+	PK[3].x = 0;
+	PK[3].y = 0;
+	PK[3].number = 3;
+	PK[3].attack = 7;
+	PK[3].bleed = 38;
+	PK[3].defence = 5;
+	PK[3].special_attack = 10;
+	PK[3].special_defence = 6;
+	PK[3].level = 5;
+	PK[3].name = "鲤鱼王";
+	PK[3].speciese = "水";
+	PK[3].skill1 = &star;
+	PK[3].skill2 = &waterattack;
+	PK[3].skill1_name = "高速星星";
+	PK[3].skill2_name = "水柱";
+	PK[3].skill_1 = 70;
+	PK[3].skill_2 = 80;
+	PK[3].skill_3 = 0;
+	PK[3].skill_4 = 0;
+
+	//不良蛙//
+	PK[4].x = 0;
+	PK[4].y = 0;
+	PK[4].number = 4;
+	PK[4].attack = 8;
+	PK[4].bleed = 42;
+	PK[4].defence = 4;
+	PK[4].special_attack = 9;
+	PK[4].special_defence = 7;
+	PK[4].level = 5;
+	PK[4].name = "不良蛙";
+	PK[4].speciese = "毒";
+	PK[4].skill1 = &stoneattack;
+	PK[4].skill2 = &musicattack;
+	PK[4].skill1_name = "扔石头";
+	PK[4].skill2_name = "音波";
+	PK[4].skill_1 = 35;
+	PK[4].skill_2 = 60;
+	PK[4].skill_3 = 0;
+	PK[4].skill_4 = 0;
+
+	//电力怪//
+	PK[5].x = 0;
+	PK[5].y = 0;
+	PK[5].number = 5;
+	PK[5].attack = 8;
+	PK[5].bleed = 46;
+	PK[5].defence = 4;
+	PK[5].special_attack = 9;
+	PK[5].special_defence = 7;
+	PK[5].level = 5;
+	PK[5].name = "电力怪";
+	PK[5].speciese = "";
+	PK[5].skill1 = &star;
+	PK[5].skill2 = &catchit;
+	PK[5].skill1_name = "高速星星";
+	PK[5].skill2_name = "电力反噬";
+	PK[5].skill_1 = 35;
+	PK[5].skill_2 = 40;
+	PK[5].skill_3 = 0;
+	PK[5].skill_4 = 0;
+
+	//大螃蟹//
+	PK[6].x = 0;
+	PK[6].y = 0;
+	PK[6].number = 6;
+	PK[6].attack = 8;
+	PK[6].bleed = 50;
+	PK[6].defence = 4;
+	PK[6].special_attack = 9;
+	PK[6].special_defence = 7;
+	PK[6].level = 5;
+	PK[6].name = "大螃蟹";
+	PK[6].speciese = "水";
+	PK[6].skill1 = &musicattack;
+	PK[6].skill2 = &boom;
+	PK[6].skill1_name = "音波攻击";
+	PK[6].skill2_name = "大爆炸";
+	PK[6].skill_1 = 45;
+	PK[6].skill_2 = 83;
+	PK[6].skill_3 = 0;
+	PK[6].skill_4 = 0;
+
+	//路卡利欧//
+	PK[7].x = 0;
+	PK[7].y = 0;
+	PK[7].number = 7;
+	PK[7].attack = 8;
+	PK[7].bleed = 100;
+	PK[7].defence = 4;
+	PK[7].special_attack = 9;
+	PK[7].special_defence = 7;
+	PK[7].level = 5;
+	PK[7].name = "路卡利欧";
+	PK[7].speciese = "格斗";
+	PK[7].skill1 = &fallingStar;
+	PK[7].skill2 = &eat;
+	PK[7].skill1_name = "流星陨落";
+	PK[7].skill2_name = "撕咬";
+	PK[7].skill_1 = 70;
+	PK[7].skill_2 = 100;
+	PK[7].skill_3 = 0;
+	PK[7].skill_4 = 0;
+
+	//伊布//
+	PK[8].x = 0;
+	PK[8].y = 0;
+	PK[8].number = 8;
+	PK[8].attack = 8;
+	PK[8].bleed = 54;
+	PK[8].defence = 4;
+	PK[8].special_attack = 9;
+	PK[8].special_defence = 7;
+	PK[8].level = 5;
+	PK[8].name = "伊布";
+	PK[8].speciese = "正常";
+	PK[8].skill1 = &musicattack;
+	PK[8].skill2 = &lighton;
+	PK[8].skill1_name = "音波";
+	PK[8].skill2_name = "激光";
+	PK[8].skill_1 = 50;
+	PK[8].skill_2 = 80;
+	PK[8].skill_3 = 0;
+	PK[8].skill_4 = 0;
+
+	//皮丘//
+	PK[9].x = 0;
+	PK[9].y = 0;
+	PK[9].number = 9;
+	PK[9].attack = 8;
+	PK[9].bleed = 58;
+	PK[9].defence = 4;
+	PK[9].special_attack = 9;
+	PK[9].special_defence = 7;
+	PK[9].level = 5;
+	PK[9].name = "皮丘";
+	PK[9].speciese = "电";
+	PK[9].skill1 = &star;
+	PK[9].skill2 = &enemyscream;
+	PK[9].skill1_name = "高速星星";
+	PK[9].skill2_name = "尖叫";
+	PK[9].skill_1 = 50;
+	PK[9].skill_2 = 80;
+	PK[9].skill_3 = 0;
+	PK[9].skill_4 = 0;
+
+	//小火猴//
+	PK[10].x = 0;
+	PK[10].y = 0;
+	PK[10].number = 10;
+	PK[10].attack = 8;
+	PK[10].bleed = 62;
+	PK[10].defence = 4;
+	PK[10].special_attack = 9;
+	PK[10].special_defence = 7;
+	PK[10].level = 5;
+	PK[10].name = "小火猴";
+	PK[10].speciese = "火";
+	PK[10].skill1 = &lighton;
+	PK[10].skill2 = &firehigh;
+	PK[10].skill1_name = "激光";
+	PK[10].skill2_name = "火柱";
+	PK[10].skill_1 = 50;
+	PK[10].skill_2 = 80;
+	PK[10].skill_3 = 0;
+	PK[10].skill_4 = 0;
+
+	//优雅猫//
+	PK[11].x = 0;
+	PK[11].y = 0;
+	PK[11].number = 11;
+	PK[11].attack = 8;
+	PK[11].bleed = 66;
+	PK[11].defence = 4;
+	PK[11].special_attack = 9;
+	PK[11].special_defence = 7;
+	PK[11].level = 5;
+	PK[11].name = "优雅猫";
+	PK[11].speciese = "正常";
+	PK[11].skill1 = &wind;
+	PK[11].skill2 = &sword;
+	PK[11].skill1_name = "风柱";
+	PK[11].skill2_name = "剑雨";
+	PK[11].skill_1 = 50;
+	PK[11].skill_2 = 80;
+	PK[11].skill_3 = 0;
+	PK[11].skill_4 = 0;
+
+	//雷公
+	PK[12].x = 0;
+	PK[12].y = 0;
+	PK[12].number = 12;
+	PK[12].attack = 8;
+	PK[12].bleed = 80;
+	PK[12].defence = 4;
+	PK[12].special_attack = 9;
+	PK[12].special_defence = 7;
+	PK[12].level = 5;
+	PK[12].name = "雷公";
+	PK[12].speciese = "电";
+	PK[12].skill1 = &fallingStar;
+	PK[12].skill2 = &catchit;
+	PK[12].skill1_name = "流星陨落";
+	PK[12].skill1_name = "电力反噬";
+	PK[12].skill_1 = 50;
+	PK[12].skill_2 = 80;
+	PK[12].skill_3 = 0;
+	PK[12].skill_4 = 0;
+
+	//炎帝
+	PK[13].x = 0;
+	PK[13].y = 0;
+	PK[13].number = 13;
+	PK[13].attack = 8;
+	PK[13].bleed = 90;
+	PK[13].defence = 4;
+	PK[13].special_attack = 9;
+	PK[13].special_defence = 7;
+	PK[13].level = 5;
+	PK[13].name = "炎帝";
+	PK[13].speciese = "火";
+	PK[13].skill1 = &catchit;
+	PK[13].skill2 = &fallingStar;
+	PK[13].skill1_name = "电力反噬";
+	PK[13].skill2_name = "流星陨落";
+	PK[13].skill_1 = 50;
+	PK[13].skill_2 = 80;
+	PK[13].skill_3 = 0;
+	PK[13].skill_4 = 0;
+
+}
+//精灵血量初始化
+void startup_pokemon_bleed()
+{
+	PK[0].bleed = 32 + (PK[0].level - 5) * 3;
+	PK[1].bleed = 30;
+	PK[2].bleed = 34;
+	PK[3].bleed = 38;
+	PK[4].bleed = 42;
+	PK[5].bleed = 46;
+	PK[6].bleed = 50;
+	PK[7].bleed = 100;
+	PK[8].bleed = 54;
+	PK[9].bleed = 58;
+	PK[10].bleed = 62;
+	PK[11].bleed = 66;
+	PK[12].bleed = 80;
+	PK[13].bleed = 90;
+}
+//精灵位置初始化
+void startup_pokemon_destination()
+{
+	int i;
+	srand(time(NULL));
+	for (i = 1; i < 4; i++)
+	{
+		PK[i].x = 556 + rand() % 60;
+		PK[i].y = 350 + rand() % 220;
+	}
+
+	PK[4].x = 683 + rand() % 50;
+	PK[4].y = 340 + rand() % 120;
+
+	for (i = 5; i < 7; i++)
+	{
+		PK[i].x = 870 + rand() % 200;
+		PK[i].y = 600 + rand() % 420;
+	}
+
+	for (i = 8; i < 9; i++)
+	{
+		PK[i].x = 870 + rand() % 200;
+		PK[i].y = 600 + rand() % 420;
+	}
+
+
+	for (i = 9; i < 11; i++)
+	{
+		PK[i].x = 600 + rand() % 200;
+		PK[i].y = 835 + rand() % 200;
+	}
+
+}
 
 
 
@@ -422,7 +821,22 @@ void startup_map_show()
 
 	}
 }
-
+void pokemon_refresh()
+{
+	int i;
+	for (i = 0; i < pokemon_number; i++)
+	{
+		if (PK[i].judge == 1 && PK[i].time < 10000)       //当一个精灵被遇到后就其judge就会变为1，为1的这段时间里是无法被遇到的，但在10000次循环后他将被重新刷新出来//
+		{
+			PK[i].time++;
+		}
+		else if (PK[i].judge == 1 && PK[i].time == 10000)
+		{
+			PK[i].judge = 0;
+			PK[i].time = 0;
+		}
+	}
+}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //对于剧情，是到石博士那里后judge变为10，才能点开与下一个雷公的对话，judge变为11，打赢变为5，才能让Judge变为11，才能与炎帝对话，打赢变为13，能与最终BOSS打
 //judge的变化为：0-1-10……
