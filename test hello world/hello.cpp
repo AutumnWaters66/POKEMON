@@ -94,7 +94,96 @@ struct Thunder
 	char* speciese = "special";
 	int damage = 110;
 }Thunder;
-
+struct FireHigh
+{
+	char* name = "火柱";
+	char* speciese = "special";
+	int damage = 90;
+}FireHigh;
+struct Boom
+{
+	char* name = "大爆炸";
+	char* speciese = "physical";
+	int damage = 150;
+}Boom;
+struct Catchit
+{
+	char* name = "电力反噬";
+	char* speciese = "special";
+	int damage = 110;
+}Catchit;
+struct FallingStar
+{
+	char* name = "流星陨落";
+	char* speciese = "physical";
+	int damage = 90;
+}FallingStar;
+struct WaterAttack
+{
+	char* name = "水柱";
+	char* speciese = "physical";
+	int damage = 60;
+}WaterAttack;
+struct Sword
+{
+	char* name = "剑雨";
+	char* speciese = "physical";
+	int damage = 120;
+}Sword;
+struct StoneAttack
+{
+	char* name = "扔石头";
+	char* speciese = "physical";
+	int damage = 60;
+}StoneAttack;
+struct EnemyScream
+{
+	char* name = "叫声";
+	char* speciese = "vary";
+	int damage = 0;
+}EnemyScream;
+struct Rope
+{
+	char* name = "飞叶快刀";
+	char* speciese = "physical";
+	int damage = 60;
+}Rope;
+struct Eat
+{
+	char* name = "撕咬";
+	char* speciese = "physical";
+	int damage = 90;
+}Eat;
+struct Wind
+{
+	char* name = "风柱";
+	char* speciese = "special";
+	int damage = 90;
+}Wind;
+struct MusicAttack
+{
+	char* name = "音波";
+	char* speciese = "special";
+	int damage = 90;
+}MusicAttack;
+struct Lighton
+{
+	char* name = "激光";
+	char* speciese = "special";
+	int damage = 110;
+}Lighton;
+struct Star
+{
+	char* name = "高速星星";
+	char* speciese = "physical";
+	int damage = 60;
+}Star;
+struct WindAttack
+{
+	char* name = "龙卷风";
+	char* speciese = "special";
+	int damage = 60;
+}WindAttack;
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //所有函数声明
 //一、剧情函数
@@ -373,10 +462,10 @@ void startup_pokemon()
 	PK[1].speciese = "火";             //元素属性
 	PK[1].skill1 = &firehigh;
 	PK[1].skill2 = &boom;
-	PK[1].skill1_name = "火柱";
-	PK[1].skill2_name = "大爆炸";
-	PK[1].skill_1 = 50;                  //技能1伤害
-	PK[1].skill_2 = 80;                  //技能2伤害
+	PK[1].skill1_name = FireHigh.name;
+	PK[1].skill2_name = Boom.name;
+	PK[1].skill_1 = FireHigh.damage;                  //技能1伤害
+	PK[1].skill_2 = Boom.damage;                  //技能2伤害
 	PK[1].skill_3 = 0;
 	PK[1].skill_4 = 0;
 	PK[1].judge = 0;
@@ -395,10 +484,10 @@ void startup_pokemon()
 	PK[2].speciese = "草";
 	PK[2].skill1 = &rope;
 	PK[2].skill2 = &fallingStar;
-	PK[2].skill1_name = "飞叶快刀";
-	PK[2].skill2_name = "流星陨落";
-	PK[2].skill_1 = 30;
-	PK[2].skill_2 = 40;
+	PK[2].skill1_name = Rope.name;
+	PK[2].skill2_name = FallingStar.name;
+	PK[2].skill_1 = Rope.damage;
+	PK[2].skill_2 = FallingStar.damage;
 	PK[2].skill_3 = 0;
 	PK[2].skill_4 = 0;
 
@@ -416,10 +505,10 @@ void startup_pokemon()
 	PK[3].speciese = "水";
 	PK[3].skill1 = &star;
 	PK[3].skill2 = &waterattack;
-	PK[3].skill1_name = "高速星星";
-	PK[3].skill2_name = "水柱";
-	PK[3].skill_1 = 70;
-	PK[3].skill_2 = 80;
+	PK[3].skill1_name = Star.name;
+	PK[3].skill2_name = WaterAttack.name;
+	PK[3].skill_1 = Star.damage;
+	PK[3].skill_2 = WaterAttack.damage;
 	PK[3].skill_3 = 0;
 	PK[3].skill_4 = 0;
 
@@ -437,10 +526,10 @@ void startup_pokemon()
 	PK[4].speciese = "毒";
 	PK[4].skill1 = &stoneattack;
 	PK[4].skill2 = &musicattack;
-	PK[4].skill1_name = "扔石头";
-	PK[4].skill2_name = "音波";
-	PK[4].skill_1 = 35;
-	PK[4].skill_2 = 60;
+	PK[4].skill1_name = StoneAttack.name;
+	PK[4].skill2_name = MusicAttack.name;
+	PK[4].skill_1 = StoneAttack.damage;
+	PK[4].skill_2 = MusicAttack.damage;
 	PK[4].skill_3 = 0;
 	PK[4].skill_4 = 0;
 
@@ -455,13 +544,13 @@ void startup_pokemon()
 	PK[5].special_defence = 7;
 	PK[5].level = 5;
 	PK[5].name = "电力怪";
-	PK[5].speciese = "";
+	PK[5].speciese = "电";
 	PK[5].skill1 = &star;
 	PK[5].skill2 = &catchit;
-	PK[5].skill1_name = "高速星星";
-	PK[5].skill2_name = "电力反噬";
-	PK[5].skill_1 = 35;
-	PK[5].skill_2 = 40;
+	PK[5].skill1_name = Star.name;
+	PK[5].skill2_name = Catchit.name;
+	PK[5].skill_1 = Star.damage;
+	PK[5].skill_2 = Catchit.damage;
 	PK[5].skill_3 = 0;
 	PK[5].skill_4 = 0;
 
@@ -475,14 +564,14 @@ void startup_pokemon()
 	PK[6].special_attack = 9;
 	PK[6].special_defence = 7;
 	PK[6].level = 5;
-	PK[6].name = "大螃蟹";
+	PK[6].name = "大钳蟹";
 	PK[6].speciese = "水";
 	PK[6].skill1 = &musicattack;
 	PK[6].skill2 = &boom;
-	PK[6].skill1_name = "音波攻击";
-	PK[6].skill2_name = "大爆炸";
-	PK[6].skill_1 = 45;
-	PK[6].skill_2 = 83;
+	PK[6].skill1_name = MusicAttack.name;
+	PK[6].skill2_name = Boom.name;
+	PK[6].skill_1 = MusicAttack.damage;
+	PK[6].skill_2 = Boom.damage;
 	PK[6].skill_3 = 0;
 	PK[6].skill_4 = 0;
 
@@ -500,14 +589,14 @@ void startup_pokemon()
 	PK[7].speciese = "格斗";
 	PK[7].skill1 = &fallingStar;
 	PK[7].skill2 = &eat;
-	PK[7].skill1_name = "流星陨落";
-	PK[7].skill2_name = "撕咬";
-	PK[7].skill_1 = 70;
-	PK[7].skill_2 = 100;
+	PK[7].skill1_name = FallingStar.name;
+	PK[7].skill2_name = Eat.name;
+	PK[7].skill_1 = FallingStar.damage;
+	PK[7].skill_2 = Eat.damage;
 	PK[7].skill_3 = 0;
 	PK[7].skill_4 = 0;
 
-	//伊布//
+	//火伊布//
 	PK[8].x = 0;
 	PK[8].y = 0;
 	PK[8].number = 8;
@@ -517,14 +606,14 @@ void startup_pokemon()
 	PK[8].special_attack = 9;
 	PK[8].special_defence = 7;
 	PK[8].level = 5;
-	PK[8].name = "伊布";
-	PK[8].speciese = "正常";
+	PK[8].name = "火精灵";
+	PK[8].speciese = "火";
 	PK[8].skill1 = &musicattack;
 	PK[8].skill2 = &lighton;
-	PK[8].skill1_name = "音波";
-	PK[8].skill2_name = "激光";
-	PK[8].skill_1 = 50;
-	PK[8].skill_2 = 80;
+	PK[8].skill1_name = MusicAttack.name;
+	PK[8].skill2_name = Lighton.name;
+	PK[8].skill_1 = MusicAttack.damage;
+	PK[8].skill_2 = Lighton.damage;
 	PK[8].skill_3 = 0;
 	PK[8].skill_4 = 0;
 
@@ -542,10 +631,10 @@ void startup_pokemon()
 	PK[9].speciese = "电";
 	PK[9].skill1 = &star;
 	PK[9].skill2 = &enemyscream;
-	PK[9].skill1_name = "高速星星";
-	PK[9].skill2_name = "尖叫";
-	PK[9].skill_1 = 50;
-	PK[9].skill_2 = 80;
+	PK[9].skill1_name = Star.name;
+	PK[9].skill2_name = EnemyScream.name;
+	PK[9].skill_1 = Star.damage;
+	PK[9].skill_2 = EnemyScream.damage;
 	PK[9].skill_3 = 0;
 	PK[9].skill_4 = 0;
 
@@ -563,10 +652,10 @@ void startup_pokemon()
 	PK[10].speciese = "火";
 	PK[10].skill1 = &lighton;
 	PK[10].skill2 = &firehigh;
-	PK[10].skill1_name = "激光";
-	PK[10].skill2_name = "火柱";
-	PK[10].skill_1 = 50;
-	PK[10].skill_2 = 80;
+	PK[10].skill1_name = Lighton.name;
+	PK[10].skill2_name = FireHigh.name;
+	PK[10].skill_1 = Lighton.damage;
+	PK[10].skill_2 = FireHigh.damage;
 	PK[10].skill_3 = 0;
 	PK[10].skill_4 = 0;
 
@@ -584,10 +673,10 @@ void startup_pokemon()
 	PK[11].speciese = "正常";
 	PK[11].skill1 = &wind;
 	PK[11].skill2 = &sword;
-	PK[11].skill1_name = "风柱";
-	PK[11].skill2_name = "剑雨";
-	PK[11].skill_1 = 50;
-	PK[11].skill_2 = 80;
+	PK[11].skill1_name = Wind.name;
+	PK[11].skill2_name = Sword.name;
+	PK[11].skill_1 = Wind.damage;
+	PK[11].skill_2 = Sword.damage;
 	PK[11].skill_3 = 0;
 	PK[11].skill_4 = 0;
 
@@ -605,10 +694,10 @@ void startup_pokemon()
 	PK[12].speciese = "电";
 	PK[12].skill1 = &fallingStar;
 	PK[12].skill2 = &catchit;
-	PK[12].skill1_name = "流星陨落";
-	PK[12].skill1_name = "电力反噬";
-	PK[12].skill_1 = 50;
-	PK[12].skill_2 = 80;
+	PK[12].skill1_name = FallingStar.name;
+	PK[12].skill1_name = Catchit.name;
+	PK[12].skill_1 = FallingStar.damage;
+	PK[12].skill_2 = Catchit.damage;
 	PK[12].skill_3 = 0;
 	PK[12].skill_4 = 0;
 
@@ -626,13 +715,12 @@ void startup_pokemon()
 	PK[13].speciese = "火";
 	PK[13].skill1 = &catchit;
 	PK[13].skill2 = &fallingStar;
-	PK[13].skill1_name = "电力反噬";
-	PK[13].skill2_name = "流星陨落";
-	PK[13].skill_1 = 50;
-	PK[13].skill_2 = 80;
+	PK[13].skill1_name = Catchit.name;
+	PK[13].skill2_name = FallingStar.name;
+	PK[13].skill_1 = Catchit.damage;
+	PK[13].skill_2 = FallingStar.damage;
 	PK[13].skill_3 = 0;
 	PK[13].skill_4 = 0;
-
 }
 //精灵血量初始化
 void startup_pokemon_bleed()
