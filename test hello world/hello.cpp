@@ -69,6 +69,8 @@ struct pokemon
 	char* skill4_name;
 	void(*skill3)();               //技能函数
 	void(*skill4)();
+	int attack_level = 2;
+	int defence_level = 2;
 	int judge;
 	int time;                             //在一定时间以后将把原位置的精灵重新刷新出来
 }PK[pokemon_number];
@@ -742,6 +744,62 @@ void startup_pokemon_bleed()
 	PK[12].bleed = 80;
 	PK[13].bleed = 90;
 }
+void startup_pokemon_level()
+{
+	PK[0].attack_level = 2;
+	PK[0].defence_level = 2;
+	PK[1].attack_level = 2;
+	PK[1].defence_level = 2;
+	PK[2].attack_level = 2;
+	PK[2].defence_level = 2;
+	PK[3].attack_level = 2;
+	PK[3].defence_level = 2;
+	PK[4].attack_level = 2;
+	PK[4].defence_level = 2;
+	PK[5].attack_level = 2;
+	PK[5].defence_level = 2;
+	PK[6].attack_level = 2;
+	PK[6].defence_level = 2;
+	PK[7].attack_level = 2;
+	PK[7].defence_level = 2;
+	PK[8].attack_level = 2;
+	PK[8].defence_level = 2;
+	PK[9].attack_level = 2;
+	PK[9].defence_level = 2;
+	PK[10].attack_level = 2;
+	PK[10].defence_level = 2;
+	PK[11].attack_level = 2;
+	PK[11].defence_level = 2;
+	PK[12].attack_level = 2;
+	PK[12].defence_level = 2;
+	PK[13].attack_level = 2;
+	PK[13].defence_level = 2;
+}
+void lighting(pokemon* PK) {};
+void scream(pokemon* PK) {
+	PK->attack_level += 1;
+};
+void flash(pokemon* PK) {
+	PK->defence_level += 1;
+};
+void thunder(pokemon* PK) {};
+void catchit(pokemon* PK) {};
+void fallingstar(pokemon* PK) {};
+void waterattack(pokemon* PK) {};
+void sword(pokemon* PK) {};
+void firehigh(pokemon* PK) {};
+void stoneattack(pokemon* PK) {};
+void boom(pokemon* PK) {};
+void enemyscream(pokemon* PK) {
+	PK->attack_level += 1;
+}
+void rope(pokemon* PK) {};
+void eat(pokemon* PK) {};
+void wind(pokemon* PK) {};
+void musicattack(pokemon* PK) {};
+void lighton(pokemon* PK) {};
+void star(pokemon* PK) {};
+void windattack(pokemon* PK) {};
 //精灵位置初始化
 void startup_pokemon_destination()
 {
@@ -1300,6 +1358,14 @@ void fight_show(pokemon* PK_enemy, pokemon* PK_own)
 		}
 
 		//我方技能
+		TCHAR ownskill_name1[5];
+		CharToTchar(PK_own->skill1_name, ownskill_name1);
+		TCHAR ownskill_name2[5];
+		CharToTchar(PK_own->skill2_name, ownskill_name2);
+		TCHAR ownskill_name3[5];
+		CharToTchar(PK_own->skill3_name, ownskill_name3);
+		TCHAR ownskill_name4[5];
+		CharToTchar(PK_own->skill4_name, ownskill_name4);
 		if (choose == 0)
 		{
 			//技能选择图标
@@ -1314,11 +1380,14 @@ void fight_show(pokemon* PK_enemy, pokemon* PK_own)
 			setbkmode(TRANSPARENT);
 			settextcolor(BLACK);
 			settextstyle(&f);                      // 设置字体样式
-			outtextxy(30 + 20, 365, _T("十万伏特"));
-			outtextxy(190 + 20, 365, _T("尖叫"));
-			outtextxy(30 + 20, 365 + 60, _T("电磁波"));
-			outtextxy(190 + 20, 365 + 60, _T("打雷"));
-
+			outtextxy(30 + 20, 365, ownskill_name1);
+			outtextxy(190 + 20, 365, ownskill_name2);
+			if (PK_own->level >= 6) {
+				outtextxy(30 + 20, 365 + 60, ownskill_name3);
+			}
+			if (PK_own->level >= 11) {
+				outtextxy(190 + 20, 365 + 60, ownskill_name4);
+			}
 			//判断敌方精灵有没有死亡//
 			if (PK_enemy->bleed <= 0)
 			{
@@ -1394,7 +1463,14 @@ void fight_show(pokemon* PK_enemy, pokemon* PK_own)
 				FlushBatchDraw();							  //结束批量绘制
 				Sleep(1000);
 				load_PK_skill(PK_enemy, PK_enemy->bleed, fullbleed2);
-				PK_own->bleed = PK_own->bleed - ((PK_enemy->level * 0.4 + 2) * PK_enemy->skill_1 * PK_enemy->attack / (PK_own->defence * 50.0) + 2);  //伤害值计算//
+				if (skill_name1 == _T("叫声") && PK_enemy->bleed >= fullbleed2 / 2.0)
+					enemyscream(PK_own);
+				else if (skill_name2 == _T("叫声") && PK_enemy->bleed < fullbleed2 / 2.0)
+					enemyscream(PK_own);
+				if (PK_enemy->bleed >= fullbleed2 / 2.0)
+					PK_own->bleed = PK_own->bleed - (PK_own->defence_level / 2.0) * (2.0 / PK_enemy->attack_level) * (PK_enemy->level * 0.4 + 2) * PK_enemy->skill_1 * PK_enemy->attack / (PK_own->defence * 50.0);  //伤害值计算//
+				else
+					PK_own->bleed = PK_own->bleed - (PK_own->defence_level / 2.0) * (2.0 / PK_enemy->attack_level) * (PK_enemy->level * 0.4 + 2) * PK_enemy->skill_2 * PK_enemy->attack / (PK_own->defence * 50.0);  //伤害值计算//
 				if (PK_own->bleed >= 0)
 				{
 					bleed_Width1 = PK_own->bleed * 1.0 / fullbleed * 180;
@@ -1436,7 +1512,7 @@ void fight_show(pokemon* PK_enemy, pokemon* PK_own)
 							FlushBatchDraw();							  //结束批量绘制
 							Sleep(500);
 							lighting();
-							PK_enemy->bleed = PK_enemy->bleed - ((PK_own->level * 0.4 + 2) * PK_own->skill_1 * PK_own->attack / (PK_enemy->defence * 50.0) + 2);  //伤害值计算//
+							PK_enemy->bleed = PK_enemy->bleed - (PK_enemy->defence_level / 2.0) * (2.0 / PK_own->attack_level) * (PK_own->level * 0.4 + 2) * PK_own->skill_1 * PK_own->attack / (PK_enemy->defence * 50.0);  //伤害值计算//
 						}
 						if (x == 190 && y == 365)
 						{
@@ -1449,13 +1525,14 @@ void fight_show(pokemon* PK_enemy, pokemon* PK_own)
 							settextstyle(&f);                      // 设置字体样式
 							outtextxy(370, 360, Name);
 							outtextxy(480, 360, _T("!"));
-							outtextxy(380, 400, _T("尖叫"));
+							outtextxy(380, 400, _T("叫声"));
 							FlushBatchDraw();							  //结束批量绘制
 							Sleep(500);
 							scream();
-							PK_enemy->bleed = PK_enemy->bleed - ((PK_own->level * 0.4 + 2) * PK_own->skill_2 * PK_own->attack / (PK_enemy->defence * 50.0) + 2);  //伤害值计算//
+							scream(PK_enemy);
+							PK_enemy->bleed = PK_enemy->bleed - (PK_enemy->defence_level / 2.0) * (2.0 / PK_own->attack_level) * (PK_own->level * 0.4 + 2) * PK_own->skill_2 * PK_own->attack / (PK_enemy->defence * 50.0);  //伤害值计算//
 						}
-						if (x == 30 && y == 365 + 60)
+						if (x == 30 && y == 365 + 60 && PK_own->level >= 6)
 						{
 							LOGFONT f;
 							gettextstyle(&f);                     // 获取当前字体设置
@@ -1470,9 +1547,10 @@ void fight_show(pokemon* PK_enemy, pokemon* PK_own)
 							FlushBatchDraw();							  //结束批量绘制
 							Sleep(500);
 							flash();
-							PK_enemy->bleed = PK_enemy->bleed - ((PK_own->level * 0.4 + 2) * PK_own->skill_3 * PK_own->attack / (PK_enemy->defence * 50.0) + 2);  //伤害值计算//
+							flash(PK_enemy);
+							PK_enemy->bleed = PK_enemy->bleed - (PK_enemy->defence_level / 2.0) * (2.0 / PK_own->attack_level) * (PK_own->level * 0.4 + 2) * PK_own->skill_3 * PK_own->attack / (PK_enemy->defence * 50.0);  //伤害值计算//
 						}
-						if (x == 190 && y == 365 + 60)
+						if (x == 190 && y == 365 + 60 && PK_own->level >= 11)
 						{
 							LOGFONT f;
 							gettextstyle(&f);                     // 获取当前字体设置
@@ -1487,7 +1565,7 @@ void fight_show(pokemon* PK_enemy, pokemon* PK_own)
 							FlushBatchDraw();							  //结束批量绘制
 							Sleep(500);
 							thunder();
-							PK_enemy->bleed = PK_enemy->bleed - ((PK_own->level * 0.4 + 2) * PK_own->skill_3 * PK_own->attack / (PK_enemy->defence * 50.0) + 2);  //伤害值计算//
+							PK_enemy->bleed = PK_enemy->bleed - (PK_enemy->defence_level / 2.0) * (2.0 / PK_own->attack_level) * (PK_own->level * 0.4 + 2) * PK_own->skill_4 * PK_own->attack / (PK_enemy->defence * 50.0);  //伤害值计算//
 						}
 						if (PK_enemy->bleed >= 0)
 						{
@@ -1592,6 +1670,7 @@ void main()
 	startup_pokemon_destination();		      //对精灵位置进行初始化
 	startup_map_show();                             //对地图进行初始化
 	start_menu();                                  //登陆界面
+	startup_pokemon_level();
 	while (1)
 	{
 		pokemon_refresh();                            //精灵刷新

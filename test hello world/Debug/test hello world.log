@@ -1,15 +1,16 @@
 ﻿  hello.cpp
-C:\Users\Administrator\Desktop\大二工程训练营\神奇宝贝-git\POKEMON\test hello world\hello.cpp(749,12): warning C4244:  “参数”: 从“time_t”转换到“unsigned int”，可能丢失数据
-C:\Users\Administrator\Desktop\大二工程训练营\神奇宝贝-git\POKEMON\test hello world\hello.cpp(809,29): warning C4002:  类函数宏的调用“_T”参数过多
-C:\Users\Administrator\Desktop\大二工程训练营\神奇宝贝-git\POKEMON\test hello world\hello.cpp(810,24): warning C4002:  类函数宏的调用“_T”参数过多
-C:\Users\Administrator\Desktop\大二工程训练营\神奇宝贝-git\POKEMON\test hello world\hello.cpp(1340,150): warning C4244:  “=”: 从“double”转换到“int”，可能丢失数据
-C:\Users\Administrator\Desktop\大二工程训练营\神奇宝贝-git\POKEMON\test hello world\hello.cpp(1346,54): warning C4244:  “=”: 从“double”转换到“int”，可能丢失数据
-C:\Users\Administrator\Desktop\大二工程训练营\神奇宝贝-git\POKEMON\test hello world\hello.cpp(1348,151): warning C4244:  “=”: 从“double”转换到“int”，可能丢失数据
-C:\Users\Administrator\Desktop\大二工程训练营\神奇宝贝-git\POKEMON\test hello world\hello.cpp(1397,35): warning C4244:  “=”: 从“double”转换到“int”，可能丢失数据
-C:\Users\Administrator\Desktop\大二工程训练营\神奇宝贝-git\POKEMON\test hello world\hello.cpp(1400,53): warning C4244:  “=”: 从“double”转换到“int”，可能丢失数据
-C:\Users\Administrator\Desktop\大二工程训练营\神奇宝贝-git\POKEMON\test hello world\hello.cpp(1439,42): warning C4244:  “=”: 从“double”转换到“int”，可能丢失数据
-C:\Users\Administrator\Desktop\大二工程训练营\神奇宝贝-git\POKEMON\test hello world\hello.cpp(1456,42): warning C4244:  “=”: 从“double”转换到“int”，可能丢失数据
-C:\Users\Administrator\Desktop\大二工程训练营\神奇宝贝-git\POKEMON\test hello world\hello.cpp(1473,42): warning C4244:  “=”: 从“double”转换到“int”，可能丢失数据
-C:\Users\Administrator\Desktop\大二工程训练营\神奇宝贝-git\POKEMON\test hello world\hello.cpp(1490,42): warning C4244:  “=”: 从“double”转换到“int”，可能丢失数据
-C:\Users\Administrator\Desktop\大二工程训练营\神奇宝贝-git\POKEMON\test hello world\hello.cpp(1494,58): warning C4244:  “=”: 从“double”转换到“int”，可能丢失数据
-  test hello world.vcxproj -> C:\Users\Administrator\Desktop\大二工程训练营\神奇宝贝-git\POKEMON\Debug\test hello world.exe
+C:\Users\13651\source\repos\POKEMON\test hello world\hello.cpp(807,12): warning C4244:  “参数”: 从“time_t”转换到“unsigned int”，可能丢失数据
+C:\Users\13651\source\repos\POKEMON\test hello world\hello.cpp(867,29): warning C4002:  类函数宏的调用“_T”参数过多
+C:\Users\13651\source\repos\POKEMON\test hello world\hello.cpp(868,24): warning C4002:  类函数宏的调用“_T”参数过多
+C:\Users\13651\source\repos\POKEMON\test hello world\hello.cpp(1409,150): warning C4244:  “=”: 从“double”转换到“int”，可能丢失数据
+C:\Users\13651\source\repos\POKEMON\test hello world\hello.cpp(1415,54): warning C4244:  “=”: 从“double”转换到“int”，可能丢失数据
+C:\Users\13651\source\repos\POKEMON\test hello world\hello.cpp(1417,151): warning C4244:  “=”: 从“double”转换到“int”，可能丢失数据
+C:\Users\13651\source\repos\POKEMON\test hello world\hello.cpp(1471,36): warning C4244:  “=”: 从“double”转换到“int”，可能丢失数据
+C:\Users\13651\source\repos\POKEMON\test hello world\hello.cpp(1473,36): warning C4244:  “=”: 从“double”转换到“int”，可能丢失数据
+C:\Users\13651\source\repos\POKEMON\test hello world\hello.cpp(1476,53): warning C4244:  “=”: 从“double”转换到“int”，可能丢失数据
+C:\Users\13651\source\repos\POKEMON\test hello world\hello.cpp(1515,42): warning C4244:  “=”: 从“double”转换到“int”，可能丢失数据
+C:\Users\13651\source\repos\POKEMON\test hello world\hello.cpp(1533,42): warning C4244:  “=”: 从“double”转换到“int”，可能丢失数据
+C:\Users\13651\source\repos\POKEMON\test hello world\hello.cpp(1551,42): warning C4244:  “=”: 从“double”转换到“int”，可能丢失数据
+C:\Users\13651\source\repos\POKEMON\test hello world\hello.cpp(1568,42): warning C4244:  “=”: 从“double”转换到“int”，可能丢失数据
+C:\Users\13651\source\repos\POKEMON\test hello world\hello.cpp(1572,58): warning C4244:  “=”: 从“double”转换到“int”，可能丢失数据
+  test hello world.vcxproj -> C:\Users\13651\Source\Repos\POKEMON\Debug\test hello world.exe
