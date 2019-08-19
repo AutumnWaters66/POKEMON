@@ -18,7 +18,7 @@
 #define window_width  640                  //窗口大小
 
 #define pokemon_number 30              //精灵数量
-
+#define MAX 2
 int game_status;
 int map_init_x, map_init_y;
 int character_x, character_y;
@@ -26,10 +26,8 @@ int character_picture_i, character_picture_j;
 int pokemon_experiece = 0;                //定义我方精灵经验
 int exercise_Width = 0;                         //我方经验槽长度
 int canvas[1652][1416] = { 0 };               //定义画布坐标 使每个像素点坐标为0
-
-int jump2 = 5;                //看起来精灵在跳动
-
-							  //NPC的位置坐标
+int jump2 = 5;
+//NPC的位置坐标
 int doctor_tong_x, doctor_tong_y;
 int NPC_1_x, NPC_1_y;
 int NPC_2_x, NPC_2_y;
@@ -46,6 +44,8 @@ IMAGE character;
 //定义精灵数据的结构体
 struct pokemon
 {
+	int selfvalue;
+	int ethnicvalue_HP;
 	int x;
 	int y;
 	int attack;					 //战斗属性
@@ -200,8 +200,8 @@ void writefile();
 void aid_menu();
 //三、数据更新函数，战斗函数，动画函数
 void startup_pokemon_judge();//精灵时间初始化
-void startup_pokemon();//精灵基础属性初始化
-void startup_pokemon_bleed();//精灵血量初始化
+int startup_pokemon();//精灵基础属性初始化
+void startup_pokemon_bleed(int bleed);//精灵血量初始化
 void startup_pokemon_desination();//精灵位置初始化
 void startup_map_show();//地图初始化
 void startup_music();//音乐播放与关闭
@@ -214,7 +214,7 @@ void load_PK_skill(pokemon* PK, int PK_bleed, int full_bleed);//敌方技能
 void interface_change_animation();//界面切换动画
 void enemy_fight_show(pokemon* PK_enemy);//敌方精灵图片加载以及技能显示
 void fight_show(pokemon* PK_enemy, pokemon* PK_own);//战斗显示函数
-void fight();//战斗函数
+void fight(int bleed);//战斗函数
 			 ///////////////////////////////////////////////////////////////////////////////////////////////
 			 //音乐文件的打开
 void startup_music()
@@ -241,7 +241,7 @@ void startup_music()
 //读档和存档的函数
 void readfile()
 {
-	FILE *fp;
+	FILE* fp;
 	fp = fopen("资源文件夹\\历史\\游戏数据.txt", "r");
 	fscanf_s(fp, "%d %d %d %d %d %d %d %d", &map_init_x, &map_init_y, &character_picture_i, &character_picture_j, &pokemon_experiece, &PK[0].level, &exercise_Width, &plot_judge);
 	fclose(fp);
@@ -249,8 +249,8 @@ void readfile()
 
 void writefile()
 {
-	FILE *fp;
-	fp = fopen( "资源文件夹\\历史\\游戏数据.txt", "w");
+	FILE* fp;
+	fp = fopen("资源文件夹\\历史\\游戏数据.txt", "w");
 	fprintf(fp, "%d %d %d %d %d %d %d %d", map_init_x, map_init_y, character_picture_i, character_picture_j, pokemon_experiece, PK[0].level, exercise_Width, plot_judge);
 	fclose(fp);
 }
@@ -428,15 +428,18 @@ void startup_pokemon_judge()
 	}
 }
 //精灵基础属性初始化
-void startup_pokemon()
+int startup_pokemon()
 {
+	srand((unsigned)time(NULL));
 	//皮卡丘//
+	PK[0].ethnicvalue_HP = 35;
+	PK[0].selfvalue = rand() % 31;
 	PK[0].level = 5;
 	PK[0].x = 0;
 	PK[0].y = 0;
 	PK[0].number = 0;
 	PK[0].attack = 8 + (PK[0].level - 5) * 2;
-	PK[0].bleed = 32 + (PK[0].level - 5) * 3;
+	PK[0].bleed = (PK[0].ethnicvalue_HP * 2 + PK[0].selfvalue) * PK[0].level / 100 + 10 + PK[0].level;
 	PK[0].defence = 4 + (PK[0].level - 5);
 	PK[0].special_attack = 9 + (PK[0].level - 5) * 2;
 	PK[0].special_defence = 7 + (PK[0].level - 5);
@@ -453,11 +456,13 @@ void startup_pokemon()
 	PK[0].judge = 1;
 
 	//小火龙//
+	PK[1].ethnicvalue_HP = 39;
+	PK[1].selfvalue = rand() % 31;
 	PK[1].x = 0;                       //精灵在地图上的坐标//
 	PK[1].y = 0;
 	PK[1].number = 1;
 	PK[1].attack = 8;                    //普攻
-	PK[1].bleed = 30;                    //生命值
+	PK[1].bleed = (PK[1].ethnicvalue_HP * 2 + PK[1].selfvalue) * PK[1].level / 100 + 10 + PK[1].level;                    //生命值
 	PK[1].defence = 4;                   //普防
 	PK[1].special_attack = 9;            //特攻
 	PK[1].special_defence = 7;           //特防
@@ -475,11 +480,13 @@ void startup_pokemon()
 	PK[1].judge = 0;
 
 	//妙蛙种子//
+	PK[2].ethnicvalue_HP = 45;
+	PK[2].selfvalue = rand() % 31;
 	PK[2].x = 0;
 	PK[2].y = 0;
 	PK[2].number = 2;
 	PK[2].attack = 6;
-	PK[2].bleed = 34;
+	PK[2].bleed = (PK[2].ethnicvalue_HP * 2 + PK[2].selfvalue) * PK[2].level / 100 + 10 + PK[2].level;
 	PK[2].defence = 3;
 	PK[2].special_attack = 8;
 	PK[2].special_defence = 6;
@@ -496,11 +503,13 @@ void startup_pokemon()
 	PK[2].skill_4 = 0;
 
 	//鲤鱼王//
+	PK[3].ethnicvalue_HP = 20;
+	PK[3].selfvalue = rand() % 31;
 	PK[3].x = 0;
 	PK[3].y = 0;
 	PK[3].number = 3;
 	PK[3].attack = 7;
-	PK[3].bleed = 38;
+	PK[3].bleed = (PK[3].ethnicvalue_HP * 2 + PK[3].selfvalue) * PK[3].level / 100 + 10 + PK[3].level;
 	PK[3].defence = 5;
 	PK[3].special_attack = 10;
 	PK[3].special_defence = 6;
@@ -517,11 +526,13 @@ void startup_pokemon()
 	PK[3].skill_4 = 0;
 
 	//不良蛙//
+	PK[4].ethnicvalue_HP = 48;
+	PK[4].selfvalue = rand() % 31;
 	PK[4].x = 0;
 	PK[4].y = 0;
 	PK[4].number = 4;
 	PK[4].attack = 8;
-	PK[4].bleed = 42;
+	PK[4].bleed = (PK[4].ethnicvalue_HP * 2 + PK[4].selfvalue) * PK[4].level / 100 + 10 + PK[4].level;
 	PK[4].defence = 4;
 	PK[4].special_attack = 9;
 	PK[4].special_defence = 7;
@@ -538,11 +549,13 @@ void startup_pokemon()
 	PK[4].skill_4 = 0;
 
 	//电力怪//
+	PK[5].ethnicvalue_HP = 45;
+	PK[5].selfvalue = rand() % 31;
 	PK[5].x = 0;
 	PK[5].y = 0;
 	PK[5].number = 5;
 	PK[5].attack = 8;
-	PK[5].bleed = 46;
+	PK[5].bleed = (PK[5].ethnicvalue_HP * 2 + PK[5].selfvalue) * PK[5].level / 100 + 10 + PK[5].level;
 	PK[5].defence = 4;
 	PK[5].special_attack = 9;
 	PK[5].special_defence = 7;
@@ -559,11 +572,13 @@ void startup_pokemon()
 	PK[5].skill_4 = 0;
 
 	//大螃蟹//
+	PK[6].ethnicvalue_HP = 30;
+	PK[6].selfvalue = rand() % 31;
 	PK[6].x = 0;
 	PK[6].y = 0;
 	PK[6].number = 6;
 	PK[6].attack = 8;
-	PK[6].bleed = 50;
+	PK[6].bleed = (PK[6].ethnicvalue_HP * 2 + PK[6].selfvalue) * PK[6].level / 100 + 10 + PK[6].level;
 	PK[6].defence = 4;
 	PK[6].special_attack = 9;
 	PK[6].special_defence = 7;
@@ -580,11 +595,13 @@ void startup_pokemon()
 	PK[6].skill_4 = 0;
 
 	//路卡利欧//
+	PK[7].ethnicvalue_HP = 70;
+	PK[7].selfvalue = rand() % 31;
 	PK[7].x = 0;
 	PK[7].y = 0;
 	PK[7].number = 7;
 	PK[7].attack = 8;
-	PK[7].bleed = 100;
+	PK[7].bleed = (PK[7].ethnicvalue_HP * 2 + PK[7].selfvalue) * PK[7].level / 100 + 10 + PK[7].level;
 	PK[7].defence = 4;
 	PK[7].special_attack = 9;
 	PK[7].special_defence = 7;
@@ -601,11 +618,13 @@ void startup_pokemon()
 	PK[7].skill_4 = 0;
 
 	//火伊布//
+	PK[8].ethnicvalue_HP = 65;
+	PK[8].selfvalue = rand() % 31;
 	PK[8].x = 0;
 	PK[8].y = 0;
 	PK[8].number = 8;
 	PK[8].attack = 8;
-	PK[8].bleed = 54;
+	PK[8].bleed = (PK[8].ethnicvalue_HP * 2 + PK[8].selfvalue) * PK[8].level / 100 + 10 + PK[8].level;
 	PK[8].defence = 4;
 	PK[8].special_attack = 9;
 	PK[8].special_defence = 7;
@@ -622,11 +641,13 @@ void startup_pokemon()
 	PK[8].skill_4 = 0;
 
 	//皮丘//
+	PK[9].ethnicvalue_HP = 20;
+	PK[9].selfvalue = rand() % 31;
 	PK[9].x = 0;
 	PK[9].y = 0;
 	PK[9].number = 9;
 	PK[9].attack = 8;
-	PK[9].bleed = 58;
+	PK[9].bleed = (PK[9].ethnicvalue_HP * 2 + PK[9].selfvalue) * PK[9].level / 100 + 10 + PK[9].level;
 	PK[9].defence = 4;
 	PK[9].special_attack = 9;
 	PK[9].special_defence = 7;
@@ -643,11 +664,13 @@ void startup_pokemon()
 	PK[9].skill_4 = 0;
 
 	//小火猴//
+	PK[10].ethnicvalue_HP = 44;
+	PK[10].selfvalue = rand() % 31;
 	PK[10].x = 0;
 	PK[10].y = 0;
 	PK[10].number = 10;
 	PK[10].attack = 8;
-	PK[10].bleed = 62;
+	PK[10].bleed = (PK[10].ethnicvalue_HP * 2 + PK[10].selfvalue) * PK[10].level / 100 + 10 + PK[10].level;
 	PK[10].defence = 4;
 	PK[10].special_attack = 9;
 	PK[10].special_defence = 7;
@@ -664,11 +687,13 @@ void startup_pokemon()
 	PK[10].skill_4 = 0;
 
 	//优雅猫//
+	PK[11].ethnicvalue_HP = 70;
+	PK[11].selfvalue = rand() % 31;
 	PK[11].x = 0;
 	PK[11].y = 0;
 	PK[11].number = 11;
 	PK[11].attack = 8;
-	PK[11].bleed = 66;
+	PK[11].bleed = (PK[11].ethnicvalue_HP * 2 + PK[11].selfvalue) * PK[11].level / 100 + 10 + PK[11].level;
 	PK[11].defence = 4;
 	PK[11].special_attack = 9;
 	PK[11].special_defence = 7;
@@ -685,11 +710,13 @@ void startup_pokemon()
 	PK[11].skill_4 = 0;
 
 	//雷公
+	PK[12].ethnicvalue_HP = 90;
+	PK[12].selfvalue = rand() % 31;
 	PK[12].x = 0;
 	PK[12].y = 0;
 	PK[12].number = 12;
 	PK[12].attack = 8;
-	PK[12].bleed = 80;
+	PK[12].bleed = (PK[12].ethnicvalue_HP * 2 + PK[12].selfvalue) * PK[12].level / 100 + 10 + PK[12].level;
 	PK[12].defence = 4;
 	PK[12].special_attack = 9;
 	PK[12].special_defence = 7;
@@ -706,11 +733,13 @@ void startup_pokemon()
 	PK[12].skill_4 = 0;
 
 	//炎帝
+	PK[13].ethnicvalue_HP = 115;
+	PK[13].selfvalue = rand() % 31;
 	PK[13].x = 0;
 	PK[13].y = 0;
 	PK[13].number = 13;
 	PK[13].attack = 8;
-	PK[13].bleed = 90;
+	PK[13].bleed = (PK[13].ethnicvalue_HP * 2 + PK[13].selfvalue) * PK[13].level / 100 + 10 + PK[13].level;
 	PK[13].defence = 4;
 	PK[13].special_attack = 9;
 	PK[13].special_defence = 7;
@@ -725,24 +754,26 @@ void startup_pokemon()
 	PK[13].skill_2 = FallingStar.damage;
 	PK[13].skill_3 = 0;
 	PK[13].skill_4 = 0;
+
+	return PK[0].bleed;
 }
 //精灵血量初始化
-void startup_pokemon_bleed()
+void startup_pokemon_bleed(int bleed)
 {
-	PK[0].bleed = 32 + (PK[0].level - 5) * 3;
-	PK[1].bleed = 30;
-	PK[2].bleed = 34;
-	PK[3].bleed = 38;
-	PK[4].bleed = 42;
-	PK[5].bleed = 46;
-	PK[6].bleed = 50;
-	PK[7].bleed = 100;
-	PK[8].bleed = 54;
-	PK[9].bleed = 58;
-	PK[10].bleed = 62;
-	PK[11].bleed = 66;
-	PK[12].bleed = 80;
-	PK[13].bleed = 90;
+	PK[0].bleed = bleed;
+	PK[1].bleed = (PK[1].ethnicvalue_HP * 2 + rand() % 31) * PK[1].level / 100 + 10 + PK[1].level;
+	PK[2].bleed = (PK[2].ethnicvalue_HP * 2 + rand() % 31) * PK[2].level / 100 + 10 + PK[2].level;
+	PK[3].bleed = (PK[3].ethnicvalue_HP * 2 + rand() % 31) * PK[3].level / 100 + 10 + PK[3].level;
+	PK[4].bleed = (PK[4].ethnicvalue_HP * 2 + rand() % 31) * PK[4].level / 100 + 10 + PK[4].level;
+	PK[5].bleed = (PK[5].ethnicvalue_HP * 2 + rand() % 31) * PK[5].level / 100 + 10 + PK[5].level;
+	PK[6].bleed = (PK[6].ethnicvalue_HP * 2 + rand() % 31) * PK[6].level / 100 + 10 + PK[6].level;
+	PK[7].bleed = (PK[7].ethnicvalue_HP * 2 + rand() % 31) * PK[7].level / 100 + 10 + PK[7].level;
+	PK[8].bleed = (PK[8].ethnicvalue_HP * 2 + rand() % 31) * PK[8].level / 100 + 10 + PK[8].level;
+	PK[9].bleed = (PK[9].ethnicvalue_HP * 2 + rand() % 31) * PK[9].level / 100 + 10 + PK[9].level;
+	PK[10].bleed = (PK[10].ethnicvalue_HP * 2 + rand() % 31) * PK[10].level / 100 + 10 + PK[10].level;
+	PK[11].bleed = (PK[11].ethnicvalue_HP * 2 + rand() % 31) * PK[11].level / 100 + 10 + PK[11].level;
+	PK[12].bleed = (PK[12].ethnicvalue_HP * 2 + rand() % 31) * PK[12].level / 100 + 10 + PK[12].level;
+	PK[13].bleed = (PK[13].ethnicvalue_HP * 2 + rand() % 31) * PK[13].level / 100 + 10 + PK[13].level;
 }
 void startup_pokemon_level()
 {
@@ -860,7 +891,7 @@ void startup_map_show()
 
 	character_picture_i = 0;
 	character_picture_j = 0;
-	char *s = "资源文件夹\\其它\\终极地图.jpg";
+	char* s = "资源文件夹\\其它\\终极地图.jpg";
 	TCHAR p[40];
 	CharToTchar(s, p);
 	loadimage(&main_map, p, 1653, 1417);
@@ -869,19 +900,19 @@ void startup_map_show()
 	BeginBatchDraw();
 
 	//地图上障碍以数组的形式存放0，1，0为障碍不可以过，1为可通行//
-	for (int i = 0; i<1652; i++)
+	for (int i = 0; i < 1652; i++)
 	{
-		for (int j = 0; j<1416; j++)
+		for (int j = 0; j < 1416; j++)
 		{
 			if (i <= 425 || i >= 1223 - 45 || j <= 210 || j >= 1161 - 50)         //地图最四周的树木//
 			{
 				canvas[i][j] = 0;
 			}
-			else if ((i>430 && i <= 552) && (j>210 && j <= 320))          //左上方的房子
+			else if ((i > 430 && i <= 552) && (j > 210 && j <= 320))          //左上方的房子
 			{
 				canvas[i][j] = 0;
 			}
-			else if ((i >= 540 - 45 && i <= 552) && (j>320 && j <= 562))      //房子下面的一排树木
+			else if ((i >= 540 - 45 && i <= 552) && (j > 320 && j <= 562))      //房子下面的一排树木
 			{
 				canvas[i][j] = 0;
 			}
@@ -897,7 +928,7 @@ void startup_map_show()
 			{
 				canvas[i][j] = 0;
 			}
-			else if ((i >= 1121 - 45 && i<1223) && (j >= 404 && j <= 521))
+			else if ((i >= 1121 - 45 && i < 1223) && (j >= 404 && j <= 521))
 			{
 				canvas[i][j] = 0;
 			}
@@ -905,23 +936,23 @@ void startup_map_show()
 			{
 				canvas[i][j] = 0;
 			}
-			else if ((i>721 && i <= 770) && (j >= 543 && j <= 630))       //中上两棵
+			else if ((i > 721 && i <= 770) && (j >= 543 && j <= 630))       //中上两棵
 			{
 				canvas[i][j] = 0;
 			}
-			else if ((i>750 && i <= 917) && (j >= 543 && j <= 732))       //中间
+			else if ((i > 750 && i <= 917) && (j >= 543 && j <= 732))       //中间
 			{
 				canvas[i][j] = 0;
 			}
-			else if ((i >= 699 - 45 && i <= 917) && (j>702 && j <= 800))    //左下
+			else if ((i >= 699 - 45 && i <= 917) && (j > 702 && j <= 800))    //左下
 			{
 				canvas[i][j] = 0;
 			}
-			else if ((i>897 && i <= 1007) && (j >= 435 && j <= 997))       //右边最长的两排
+			else if ((i > 897 && i <= 1007) && (j >= 435 && j <= 997))       //右边最长的两排
 			{
 				canvas[i][j] = 0;
 			}
-			else if ((i >= 402 && i<664) && (j >= 659 && j <= 725))         //中间部分全部设置完毕，将四周零散的树木设置完毕
+			else if ((i >= 402 && i < 664) && (j >= 659 && j <= 725))         //中间部分全部设置完毕，将四周零散的树木设置完毕
 			{
 				canvas[i][j] = 0;
 			}
@@ -933,7 +964,7 @@ void startup_map_show()
 			{
 				canvas[i][j] = 0;
 			}
-			else if ((i >= 1092 && i<1223 - 45) && (j >= 862 && j <= 1000))   //右下
+			else if ((i >= 1092 && i < 1223 - 45) && (j >= 862 && j <= 1000))   //右下
 			{
 				canvas[i][j] = 0;
 			}
@@ -945,19 +976,19 @@ void startup_map_show()
 			{
 				canvas[i][j] = 0;
 			}
-			else if ((i>426 && i<456) && (j>362 && j<392))       //NPC童博士
+			else if ((i > 426 && i < 456) && (j > 362 && j < 392))       //NPC童博士
 			{
 				canvas[i][j] = 0;
 			}
-			else if ((i>899 && i<935) && (j>378 && j<423))       //boss雷公
+			else if ((i > 899 && i < 935) && (j > 378 && j < 423))       //boss雷公
 			{
 				canvas[i][j] = 0;
 			}
-			else if ((i>1077 && i<1125) && (j>1021 && j<1062))     //boss炎帝
+			else if ((i > 1077 && i < 1125) && (j > 1021 && j < 1062))     //boss炎帝
 			{
 				canvas[i][j] = 0;
 			}
-			else if ((i>618 && i<656) && (j>758 && j<800))        //boss路卡利欧
+			else if ((i > 618 && i < 656) && (j > 758 && j < 800))        //boss路卡利欧
 			{
 				canvas[i][j] = 0;
 			}
@@ -999,7 +1030,7 @@ void map_show()
 		plot_1();
 		plot_judge = 10;                //对于情节往前推进的数字链接，只有到达指定数字才能往下继续
 	}
-	
+
 	else
 	{
 		FlushBatchDraw();
@@ -1075,7 +1106,6 @@ void operate()
 		character_picture_i++;
 	}
 }
-
 //导入敌方精灵图片
 void load_PK_picture(pokemon* PK)
 {
@@ -1123,10 +1153,10 @@ void load_PK_picture(pokemon* PK)
 }
 
 //导入敌方技能
-void load_PK_skill(pokemon* PK, int PK_bleed, int full_bleed)
+void load_PK_skill(pokemon* PK, int i)
 {
 	void(*funcPK)();  //定义一个函数指针，空函数
-	if (PK_bleed >= full_bleed / 2.0)
+	if (i == 0)
 		funcPK = PK->skill1;  //把函数名调用出来
 	else
 		funcPK = PK->skill2;
@@ -1154,7 +1184,6 @@ void interface_change_animation()
 	}
 	//到这里动画结束
 }
-
 //战斗显示函数
 void fight_show(pokemon* PK_enemy, pokemon* PK_own)
 {
@@ -1388,6 +1417,7 @@ void fight_show(pokemon* PK_enemy, pokemon* PK_own)
 			if (PK_own->level >= 11) {
 				outtextxy(190 + 20, 365 + 60, ownskill_name4);
 			}
+
 			//判断敌方精灵有没有死亡//
 			if (PK_enemy->bleed <= 0)
 			{
@@ -1456,18 +1486,20 @@ void fight_show(pokemon* PK_enemy, pokemon* PK_own)
 				outtextxy(370, 360, Name_2);
 				outtextxy(480, 360, _T("!"));
 				outtextxy(370, 400, _T("使用了"));
-				if (PK_enemy->bleed >= fullbleed2 / 2.0)
+				srand((unsigned)time(NULL));
+				int i = rand() % MAX;
+				if (i == 0)
 					outtextxy(450, 400, skill_name1);
 				else
 					outtextxy(450, 400, skill_name2);
 				FlushBatchDraw();							  //结束批量绘制
 				Sleep(1000);
-				load_PK_skill(PK_enemy, PK_enemy->bleed, fullbleed2);
-				if (skill_name1 == _T("叫声") && PK_enemy->bleed >= fullbleed2 / 2.0)
+				load_PK_skill(PK_enemy, i);
+				if (skill_name1 == _T("叫声") && i == 0)
 					enemyscream(PK_own);
-				else if (skill_name2 == _T("叫声") && PK_enemy->bleed < fullbleed2 / 2.0)
+				else if (skill_name2 == _T("叫声") && i == 1)
 					enemyscream(PK_own);
-				if (PK_enemy->bleed >= fullbleed2 / 2.0)
+				if (i == 0)
 					PK_own->bleed = PK_own->bleed - (PK_own->defence_level / 2.0) * (2.0 / PK_enemy->attack_level) * (PK_enemy->level * 0.4 + 2) * PK_enemy->skill_1 * PK_enemy->attack / (PK_own->defence * 50.0);  //伤害值计算//
 				else
 					PK_own->bleed = PK_own->bleed - (PK_own->defence_level / 2.0) * (2.0 / PK_enemy->attack_level) * (PK_enemy->level * 0.4 + 2) * PK_enemy->skill_2 * PK_enemy->attack / (PK_own->defence * 50.0);  //伤害值计算//
@@ -1613,7 +1645,7 @@ void fight_show(pokemon* PK_enemy, pokemon* PK_own)
 	}
 }
 //战斗函数
-void fight()
+void fight(int bleed)
 {
 	int i;
 	for (i = 0; i < pokemon_number; i++)				 //遍历精灵坐标数组，
@@ -1623,7 +1655,8 @@ void fight()
 			interface_change_animation();		    //界面切换动画
 			fight_show(&PK[i], &PK[0]);				 //战斗显示函数	
 			interface_change_animation();       //界面切换动画
-			startup_pokemon_bleed();           //重置精灵血量
+			startup_pokemon_bleed(bleed);           //重置精灵血量
+			startup_pokemon_level();           //重置精灵攻防等级
 		}
 	}
 }
@@ -1664,18 +1697,17 @@ void plot_1()
 void main()
 {
 	startup_music();
-	startup_pokemon_judge();					  //对精灵时间属性进行初始化
-	startup_pokemon();						     //对精灵基础属性进行初始化
-	startup_pokemon_bleed();                   //对精灵血量进行初始化
-	startup_pokemon_destination();		      //对精灵位置进行初始化
 	startup_map_show();                             //对地图进行初始化
-	start_menu();                                  //登陆界面
-	startup_pokemon_level();
+	start_menu();                                   //登陆界面
+	startup_pokemon_judge();					  //对精灵时间属性进行初始化
+	int bleed = startup_pokemon();						     //对精灵基础属性进行初始化
+	startup_pokemon_bleed(bleed);                   //对精灵血量进行初始化
+	startup_pokemon_destination();		      //对精灵位置进行初始化
 	while (1)
 	{
 		pokemon_refresh();                            //精灵刷新
 		map_show();										//地图显示函数
-		fight();												//战斗函数
+		fight(bleed);												//战斗函数
 		operate();								// 客户交互函数
 	}
 }
