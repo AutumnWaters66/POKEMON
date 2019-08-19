@@ -433,7 +433,7 @@ int startup_pokemon()
 	srand((unsigned)time(NULL));
 	//皮卡丘//
 	PK[0].ethnicvalue_HP = 35;
-	PK[0].selfvalue = rand() % 31;
+	PK[0].selfvalue = rand() % 32;
 	PK[0].level = 5;
 	PK[0].x = 0;
 	PK[0].y = 0;
@@ -457,7 +457,7 @@ int startup_pokemon()
 
 	//小火龙//
 	PK[1].ethnicvalue_HP = 39;
-	PK[1].selfvalue = rand() % 31;
+	PK[1].selfvalue = rand() % 32;
 	PK[1].x = 0;                       //精灵在地图上的坐标//
 	PK[1].y = 0;
 	PK[1].number = 1;
@@ -481,7 +481,7 @@ int startup_pokemon()
 
 	//妙蛙种子//
 	PK[2].ethnicvalue_HP = 45;
-	PK[2].selfvalue = rand() % 31;
+	PK[2].selfvalue = rand() % 32;
 	PK[2].x = 0;
 	PK[2].y = 0;
 	PK[2].number = 2;
@@ -504,7 +504,7 @@ int startup_pokemon()
 
 	//鲤鱼王//
 	PK[3].ethnicvalue_HP = 20;
-	PK[3].selfvalue = rand() % 31;
+	PK[3].selfvalue = rand() % 32;
 	PK[3].x = 0;
 	PK[3].y = 0;
 	PK[3].number = 3;
@@ -527,7 +527,7 @@ int startup_pokemon()
 
 	//不良蛙//
 	PK[4].ethnicvalue_HP = 48;
-	PK[4].selfvalue = rand() % 31;
+	PK[4].selfvalue = rand() % 32;
 	PK[4].x = 0;
 	PK[4].y = 0;
 	PK[4].number = 4;
@@ -550,7 +550,7 @@ int startup_pokemon()
 
 	//电力怪//
 	PK[5].ethnicvalue_HP = 45;
-	PK[5].selfvalue = rand() % 31;
+	PK[5].selfvalue = rand() % 32;
 	PK[5].x = 0;
 	PK[5].y = 0;
 	PK[5].number = 5;
@@ -573,7 +573,7 @@ int startup_pokemon()
 
 	//大螃蟹//
 	PK[6].ethnicvalue_HP = 30;
-	PK[6].selfvalue = rand() % 31;
+	PK[6].selfvalue = rand() % 32;
 	PK[6].x = 0;
 	PK[6].y = 0;
 	PK[6].number = 6;
@@ -596,7 +596,7 @@ int startup_pokemon()
 
 	//路卡利欧//
 	PK[7].ethnicvalue_HP = 70;
-	PK[7].selfvalue = rand() % 31;
+	PK[7].selfvalue = rand() % 32;
 	PK[7].x = 0;
 	PK[7].y = 0;
 	PK[7].number = 7;
@@ -619,7 +619,7 @@ int startup_pokemon()
 
 	//火伊布//
 	PK[8].ethnicvalue_HP = 65;
-	PK[8].selfvalue = rand() % 31;
+	PK[8].selfvalue = rand() % 32;
 	PK[8].x = 0;
 	PK[8].y = 0;
 	PK[8].number = 8;
@@ -642,7 +642,7 @@ int startup_pokemon()
 
 	//皮丘//
 	PK[9].ethnicvalue_HP = 20;
-	PK[9].selfvalue = rand() % 31;
+	PK[9].selfvalue = rand() % 32;
 	PK[9].x = 0;
 	PK[9].y = 0;
 	PK[9].number = 9;
@@ -665,7 +665,7 @@ int startup_pokemon()
 
 	//小火猴//
 	PK[10].ethnicvalue_HP = 44;
-	PK[10].selfvalue = rand() % 31;
+	PK[10].selfvalue = rand() % 32;
 	PK[10].x = 0;
 	PK[10].y = 0;
 	PK[10].number = 10;
@@ -688,7 +688,7 @@ int startup_pokemon()
 
 	//优雅猫//
 	PK[11].ethnicvalue_HP = 70;
-	PK[11].selfvalue = rand() % 31;
+	PK[11].selfvalue = rand() % 32;
 	PK[11].x = 0;
 	PK[11].y = 0;
 	PK[11].number = 11;
@@ -711,7 +711,7 @@ int startup_pokemon()
 
 	//雷公
 	PK[12].ethnicvalue_HP = 90;
-	PK[12].selfvalue = rand() % 31;
+	PK[12].selfvalue = rand() % 32;
 	PK[12].x = 0;
 	PK[12].y = 0;
 	PK[12].number = 12;
@@ -734,7 +734,7 @@ int startup_pokemon()
 
 	//炎帝
 	PK[13].ethnicvalue_HP = 115;
-	PK[13].selfvalue = rand() % 31;
+	PK[13].selfvalue = rand() % 32;
 	PK[13].x = 0;
 	PK[13].y = 0;
 	PK[13].number = 13;
